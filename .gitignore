@@ -164,3 +164,6 @@ pip-log.txt
 
 # SVN files
 .svn
+
+# CUSTOM
+localRes/
