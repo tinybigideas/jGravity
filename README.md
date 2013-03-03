@@ -12,33 +12,33 @@ As mentioned, all you need to do is use $('body').jGravity(); to produce the mai
 
 Simple Example:
 
-<script>
+	<script>
 
-$(document).ready(function() {
-
-     $('body').jGravity();
-});
-
-</script>
+		$(document).ready(function() {
+		
+		     $('body').jGravity();
+		});
+	
+	</script>
 
 Advanced Example:
 
-<script>
+	<script>
+	
+	    $(document).ready(function() {
+	
+	         $('div.jGravity').live('click', function() {
+	              $('body').jGravity({
+	                   target: 'everything',
+	                   ignoreClass: 'ignoreMe',
+	                   weight: 25,
+	                   depth: 5,
+	                   drag: true
+	          	});
+	     	});
+		});
 
-$(document).ready(function() {
-
-     $('div.jGravity').live('click', function() {
-          $('body').jGravity({
-               target: 'everything',
-               ignoreClass: 'ignoreMe',
-               weight: 25,
-               depth: 5,
-               drag: true
-          });
-     });
-});
-
-</script>
+	</script>
 
 Also, don't be afraid to use multiple jGravity() class on multiple targets to effect them differently.
 
@@ -46,17 +46,23 @@ SETTINGS
 ========
 
 target: Enter your target critera e.g. 'div, p, span', 'h2', 'div#specificDiv', or even 'everything' to target everything in the body. You can cover as many different targets as you like
+
 ignoreClass: Specify if you would like to use an ignore class, and then specify the class in quotations, e.g. 'ignoreMe'
+
 weight: Enter any  numerical  value that is greater than 1 to decide the weight of elements (25 is default), you can also use the strings 'heavy' or 'light' to quickly test effects
+
 depth: Enter a numerical value that is greater than 1 to decide depth of gravity and how many elements it affects (1 is default). This is used to prevent targeting structural divs or other items which may break layout in jGravity
+
 drag: Decide if users can drag elements which have been effected by jGravity. Only 'true' and 'false' are acceptable.
+
 Example:
 
-target: 'everything'
-ignoreClass: 'ignoreMe'
-weight: 25
-depth: 5
-drag: true
+    target: 'everything'
+    ignoreClass: 'ignoreMe'
+    weight: 25
+    depth: 5
+    drag: true
+
 Feel free to play with the above settings until you receive the desired effect.
 
 DEMO
@@ -70,9 +76,13 @@ CREDITS
 jGravity would not be possible without the work of:
 
 Mr. Doobs :: http://mrdoob.com/92/Google_Gravity
+
 GravityScript :: http://gravityscript.googlecode.com/
+
 Alex Arnell's inheritance.js :: http://code.google.com/p/inheritance/
+
 Box2Djs :: http://box2d-js.sourceforge.net/
+
 Thank you very much for your work on the above guys, I wouldn't have been able to make this work without you. If anyone if interested in more complex interactions with javascript physics engines, please check those guys out.
  
 Hopefully that's all you need to know, so go ahead and download and have a play!
