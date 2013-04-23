@@ -197,18 +197,18 @@ function onDocumentMouseUp() {
 }
 
 // onDocumentMouseMove()
-function onDocumentMouseMove() {
+function onDocumentMouseMove(e) {
 	if (!isRunning)
 		run();
 
-	mouseX = window.event.clientX;
-	mouseY = window.event.clientY;
+	mouseX = e.clientX || window.event.clientX;
+	mouseY = e.clientY || window.event.clientY;
 }
 
 // onElementMouseDown()
-function onElementMouseDown() {
-	mouseOnClick[0] = window.event.clientX;
-	mouseOnClick[1] = window.event.clientY;	
+function onElementMouseDown(e) {
+	mouseOnClick[0] = e.clientX || window.event.clientX;
+	mouseOnClick[1] = e.clientY || window.event.clientY;	
 	return false;
 }
 
