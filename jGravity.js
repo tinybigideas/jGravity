@@ -65,6 +65,11 @@ FUNCTIONS
 			     
             var options =  $.extend(settings, options);
 			
+			window.jGravity = $.extend(window.jGravity, {
+				settings: options,
+				isDragging: false
+			});
+
             return this.each(function() {
 				var o = options;
 				
@@ -84,8 +89,15 @@ FUNCTIONS
 				// Add gravity to target elements
 				$(o.target).each(function() {
 					if($(this).children().length < o.depth && !$(this).hasClass(o.ignoreClass)) { // filter by depth + ignoreClass
-						$(this).addClass("box2d");
-						$(this).css("zIndex", "999");
+						$(this)
+							.addClass("box2d")						
+							.css("zIndex", "999")
+							.click(function(e) { // Prevent click if dragged (for links)
+								if (window.jGravity.isDragging) {
+									e.preventDefault();
+									return false;
+								}
+							});
 					}
 				});	
 
@@ -181,7 +193,7 @@ function init() {
 // run()
 function run() {
 	isRunning = true;
-	setInterval(loop, o.weight); // weight setting
+	setInterval(loop, window.jGravity.settings.weight); // weight setting
 }
 
 // onDocumentMouseDown() - Used to detect mouse on elements to move
@@ -273,21 +285,35 @@ function createBox(world, x, y, width, height, fixed, element) {
 // mouseDrag()
 function mouseDrag() {
 
-	if (o.drag == true) {
-		// mouse press
-		if (isMouseDown && !mouseJoint) {
+	if (window.jGravity.settings.drag == true) {
+		if (isMouseDown) {
+			// Set first click origin, or detect drag past buffer
+			if (!window.jGravity.clickOrigin) {
+				window.jGravity.clickOrigin = {
+					X: mouseX,
+					Y: mouseY
+				};
+			} else if (
+				Math.abs(window.jGravity.clickOrigin.X - mouseX) > 10
+				|| Math.abs(window.jGravity.clickOrigin.Y - mouseY) > 10
+			) {
+				window.jGravity.isDragging = true;
+			}
 	
-			var body = getBodyAtMouse();
-			
-			if (body) {
-				var md = new b2MouseJointDef();
-				md.body1 = world.m_groundBody;
-				md.body2 = body;
-				md.target.Set(mouseX, mouseY);
-				md.maxForce = 30000.0 * body.m_mass;
-				md.timeStep = timeStep;
-				mouseJoint = world.CreateJoint(md);
-				body.WakeUp();
+			// Forward mouse movement
+			if (!mouseJoint) {				
+				var body = getBodyAtMouse();
+				
+				if (body) {
+					var md = new b2MouseJointDef();
+					md.body1 = world.m_groundBody;
+					md.body2 = body;
+					md.target.Set(mouseX, mouseY);
+					md.maxForce = 30000.0 * body.m_mass;
+					md.timeStep = timeStep;
+					mouseJoint = world.CreateJoint(md);
+					body.WakeUp();
+				}
 			}
 		}
 		
@@ -297,6 +323,8 @@ function mouseDrag() {
 				world.DestroyJoint(mouseJoint);
 				mouseJoint = null;
 			}
+			window.jGravity.isDragging = false;
+			window.jGravity.clickOrigin = null;
 		}
 		
 		// mouse move
