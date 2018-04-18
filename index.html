@@ -4,18 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>jGravity Demo</title>
 
-<!-- jQuery *Reequired -->
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<!-- jQuery *Required -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- jGravity file -->
-<script type="text/javascript" src="jGravity-min.js"></script>
-
-<!-- Unimportant CSS File for demo purposes -->
-<link href="http://tinybigideas.com/template/css/colourpadFramework-min.css" rel="stylesheet" />
-
+<script type="text/javascript" src="jGravity.js"></script>
 
 <script>
-$(document).ready(function() {
-	$('div.jGravity').live('click', function() { // This can be changed to anything you like in order to trigger jGravity effect
+$(document).ready(() => {
+	$('div.jGravity').on('click', () => { // This can be changed to anything you like in order to trigger jGravity effect
 		$('body').jGravity({ // jGravity works best when targeting the body
 			target: 'everything', // Enter your target critera e.g. 'div, p, span', 'h2' or 'div#specificDiv', or even 'everything' to target everything in the body
 			ignoreClass: 'ignoreMe', // Specify if you would like to use an ignore class, and then specify the class
@@ -26,11 +22,11 @@ $(document).ready(function() {
 
 		// Misc code for demo purposes
 		$(this).removeClass('jGravity');
-		$(this).delay(1000).queue(function() {
+		$(this).delay(1000).queue(() => {
 			$(this).html("<h2><a href='http://tinybigideas.com/plugins/jquery-gravity/'>Get jGravity</a></h2>");
 		});
 		// ----- \\
-		
+
 	});
 });
 </script>
@@ -45,10 +41,10 @@ div.blackHeader {width:100%; clear:both; height:30px;}
 	div.blackHeader div.headPiece {background:#333; width:5%; float:left; height:30px;}
 		div.blackHeader div.headPiece p {color: white;text-align: center;padding-top: 5px;}
 			div.blackHeader div.headPiece p a {color: white;text-decoration: none;}
-		
+
 div.logoBar {width:100%; clear:both; height:70px;}
 	div.logoBar div.barPiece {background:#F1F1F1; width:20%; height:70px; border-bottom:1px solid #E2E2E2; float:left;}
-	div.logoBar h1 {color:#333; text-align:center; font-size:30px; padding-top:12px; font-weight:normal;}	
+	div.logoBar h1 {color:#333; text-align:center; font-size:30px; padding-top:12px; font-weight:normal;}
 		div.logoBar h1 a {color: #333; padding-bottom: 2px;}
 
 div.goBtnCentre {width:100%; clear:both; height: 80px; margin:20px 0;}

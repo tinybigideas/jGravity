@@ -1,14 +1,14 @@
 /*
-  
+
  * @project:	jGravity
  * @version:	0.8 - 29/04/2012
  * @author:		Craig Thomas - www.tinybigideas.com
  * @project:	http://tinybigideas.com/plugins/jquery-gravity/
  * @license:	jGravity is licensed under a Open Source Initiative OSI MIT License: http://opensource.org/licenses/mit-license.php
  * @changlog:	http://tinybigideas.com/plugins/jquery-gravity/
- 
+
  */
- 
+
 /*------------------------------------*\
    CREDITS
 \*------------------------------------*/
@@ -18,7 +18,7 @@
  - Alex Arnell's inheritance.js :: http://code.google.com/p/inheritance/
  - Box2Djs :: http://box2d-js.sourceforge.net/
 */
- 
+
 /*------------------------------------*\
    CONTENTS
 \*------------------------------------*/
@@ -47,13 +47,13 @@ FUNCTIONS
  - getBodyAtMouse()
  - setWalls()
  - getBrowserDimensions()
- 
+
 */
 
 (function($){
-    $.fn.extend({ 
+    $.fn.extend({
         jGravity: function(options) {
-			
+
 			// set default settings
 			var settings = {
                 target: 'div, span, img, ol, ul, li, a, blockquote, button, input, embed, h1, h2, h3, h4, h5, h6, label, object, option, p, pre, span, table',
@@ -62,17 +62,17 @@ FUNCTIONS
 				depth: 1,
 				drag: true
             }
-			     
+
             var options =  $.extend(settings, options);
-			
+
             return this.each(function() {
 				var o = options;
-				
+
 				// allow user to specify target as 'everything'
 				if (o.target == 'everything') {
 					o.target = 'body *'
 				}
-				
+
 				// allow user to specify weight as 'light' or 'heavy'
 				if (o.weight == 'light') {
 					o.weight = 50;
@@ -87,7 +87,7 @@ FUNCTIONS
 						$(this).addClass("box2d");
 						$(this).css("zIndex", "999");
 					}
-				});	
+				});
 
 /*------------------------------------*\
    LIBRARIES
@@ -112,7 +112,7 @@ var stage = [window.screenX,window.screenY,window.innerWidth,window.innerHeight]
 var isRunning = false;
 var isMouseDown = false;
 var iterations = 1;
-var timeStep = 1/25; 
+var timeStep = 1/25;
 var walls = new Array();
 var wall_thickness = 200;
 var wallsSetted = false;
@@ -139,7 +139,7 @@ init();
 // init()
 function init() {
 	canvas = document.getElementById('canvas');
-	
+
 	document.onmousedown = onDocumentMouseDown;
 	document.onmouseup = onDocumentMouseUp;
 	document.onmousemove = onDocumentMouseMove;
@@ -150,13 +150,13 @@ function init() {
 	worldAABB.maxVertex.Set( screen.width + 200, screen.height + 200);
 
 	world = new b2World(worldAABB, new b2Vec2(0, 0), true);
-	
-	// walls	
+
+	// walls
 	setWalls();
 
 	// Get box2d elements
 	elements = $('.box2d');
-		
+
 	for (i = 0; i < elements.length; i++) {
 
 		var element = elements[i];
@@ -164,17 +164,17 @@ function init() {
 		properties[i][2] = element.offsetWidth;
 		properties[i][3] = element.offsetHeight;
 	}
-	
+
 	for (i = 0; i < elements.length; i++) {
 		var element = elements[i];
 		element.style.position = 'absolute';
 		element.style.left = properties[i][0] + 'px';
 		element.style.top = properties[i][1] + 'px';
-		
+
 		element.onmousedown = onElementMouseDown;
 		element.onmouseup = onElementMouseUp;
-		
-		bodies[i] = createBox(world, properties[i][0] + (properties[i][2] >> 1), properties[i][1] + (properties[i][3] >> 1), properties[i][2] / 2, properties[i][3] / 2, false);		
+
+		bodies[i] = createBox(world, properties[i][0] + (properties[i][2] >> 1), properties[i][1] + (properties[i][3] >> 1), properties[i][2] / 2, properties[i][3] / 2, false);
 	}
 }
 
@@ -208,7 +208,7 @@ function onDocumentMouseMove() {
 // onElementMouseDown()
 function onElementMouseDown() {
 	mouseOnClick[0] = window.event.clientX;
-	mouseOnClick[1] = window.event.clientY;	
+	mouseOnClick[1] = window.event.clientY;
 	return false;
 }
 
@@ -226,18 +226,18 @@ function loop() {
 
 	delta[0] += (0 - delta[0]) * .5;
 	delta[1] += (0 - delta[1]) * .5;
-	
+
 	world.m_gravity.x = orientation.x * 350 + delta[0];
 	world.m_gravity.y = orientation.y * 350 + delta[1];
 
 	mouseDrag();
-	world.Step(timeStep, iterations);	
-	
+	world.Step(timeStep, iterations);
+
 	for (i = 0; i < elements.length; i++) {
 
 		var body = bodies[i];
 		var element = elements[i];
-		
+
 		element.style.left = (body.m_position0.x - (properties[i][2] >> 1)) + 'px';
 		element.style.top = (body.m_position0.y - (properties[i][3] >> 1)) + 'px';
 
@@ -276,9 +276,9 @@ function mouseDrag() {
 	if (o.drag == true) {
 		// mouse press
 		if (isMouseDown && !mouseJoint) {
-	
+
 			var body = getBodyAtMouse();
-			
+
 			if (body) {
 				var md = new b2MouseJointDef();
 				md.body1 = world.m_groundBody;
@@ -290,7 +290,7 @@ function mouseDrag() {
 				body.WakeUp();
 			}
 		}
-		
+
 		// mouse release
 		if (!isMouseDown) {
 			if (mouseJoint) {
@@ -298,14 +298,14 @@ function mouseDrag() {
 				mouseJoint = null;
 			}
 		}
-		
+
 		// mouse move
 		if (mouseJoint) {
 			var p2 = new b2Vec2(mouseX, mouseY);
 			mouseJoint.SetTarget(p2);
 		}
 	}
-	
+
 }
 
 // getBodyAtMouse()
@@ -314,7 +314,7 @@ function getBodyAtMouse() {
 	// Make a small box.
 	var mousePVec = new b2Vec2();
 	mousePVec.Set(mouseX, mouseY);
-	
+
 	var aabb = new b2AABB();
 	aabb.minVertex.Set(mouseX - 1, mouseY - 1);
 	aabb.maxVertex.Set(mouseX + 1, mouseY + 1);
@@ -324,7 +324,7 @@ function getBodyAtMouse() {
 	var shapes = new Array();
 	var count = world.Query(aabb, shapes, k_maxCount);
 	var body = null;
-	
+
 	for (var i = 0; i < count; ++i) {
 
 		if (shapes[i].m_body.IsStatic() == false) {
@@ -349,18 +349,18 @@ function setWalls() {
 		world.DestroyBody(walls[1]);
 		world.DestroyBody(walls[2]);
 		world.DestroyBody(walls[3]);
-		
-		walls[0] = null; 
+
+		walls[0] = null;
 		walls[1] = null;
 		walls[2] = null;
 		walls[3] = null;
 	}
-	
+
 	walls[0] = createBox(world, stage[2] / 2, - wall_thickness, stage[2], wall_thickness);
 	walls[1] = createBox(world, stage[2] / 2, stage[3] + wall_thickness, stage[2], wall_thickness);
 	walls[2] = createBox(world, - wall_thickness, stage[3] / 2, wall_thickness, stage[3]);
-	walls[3] = createBox(world, stage[2] + wall_thickness, stage[3] / 2, wall_thickness, stage[3]);	
-	
+	walls[3] = createBox(world, stage[2] + wall_thickness, stage[3] / 2, wall_thickness, stage[3]);
+
 	wallsSetted = true;
 }
 
@@ -380,32 +380,32 @@ function findPos(obj) {
 	return [curleft,curtop];
 }
 
-// getBrowserDimensions() 
+// getBrowserDimensions()
 function getBrowserDimensions() {
 	var changed = false;
-		
+
 	if (stage[0] != window.screenX) {
 		delta[0] = (window.screenX - stage[0]) * 50;
 		stage[0] = window.screenX;
 		changed = true;
 	}
-	
+
 	if (stage[1] != window.screenY) {
 		delta[1] = (window.screenY - stage[1]) * 50;
 		stage[1] = window.screenY;
 		changed = true;
 	}
-	
+
 	if (stage[2] != window.innerWidth) {
 		stage[2] = window.innerWidth;
 		changed = true;
 	}
-	
+
 	if (stage[3] != window.innerHeight) {
 		stage[3] = window.innerHeight;
 		changed = true;
 	}
-	
+
 	return changed;
 }
 
@@ -413,5 +413,5 @@ function getBrowserDimensions() {
 // jQuery plugin end
 			});
 		}
-	});      
+	});
 })(jQuery);
